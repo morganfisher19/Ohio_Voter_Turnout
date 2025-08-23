@@ -94,11 +94,11 @@ df = df[['CD116', 'Voting rate', '18-44', '45-64',
 
 df.loc[:, df.columns != 'Voter Data'] = df.loc[:, df.columns != 'Voter Data'].round(1)
 
-# Further refine columns
-df['Non-white'] = 100 - df['White']
-df['45 and older'] = df['65 and older'] + df['45-64']
+# # Further refine columns
+# df['Non-white'] = 100 - df['White']
+# df['45 and older'] = df['65 and older'] + df['45-64']
 
-df = df[['CD116', 'Voting rate', 'Bachelors or more', '45 and older', 'In Poverty', 'Non-white', ]]
+# df = df[['CD116', 'Voting rate', 'Bachelors or more', '45 and older', 'In Poverty', 'Non-white', ]]
 
 # Export as csv
 df.to_csv('./data_2018/cd_2018.csv', index=False)

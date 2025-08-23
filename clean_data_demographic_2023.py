@@ -79,14 +79,12 @@ cd['CD119'] = 'Ohio ' + cd['CD119FP'].astype(str).str.zfill(2)
 # Final columns included are same as 2018 dataset
 cd = cd[['CD119', '18-44', '45-64', '65 and older',
        'Women', 'In Poverty', 'Did not finish high school',
-       'Bachelors or more', 'White', 'Black', 'Asian', 'Hispanic' ]]
+       'Bachelors or more', 'White', 'Black', 'Asian', 'Hispanic']]
 cd = cd.round(1)
 
-# Further refine columns
-
 # Further choose columns
-cd['Non-white'] = 100 - cd['White']
-cd['45 and older'] = cd['65 and older'] + cd['45-64']
-cd = cd[['CD119', 'Bachelors or more', '45 and older', 'In Poverty', 'Non-white', ]]
+# cd['Non-white'] = 100 - cd['White']
+# cd['45 and older'] = cd['65 and older'] + cd['45-64']
+# cd = cd[['CD119', 'Bachelors or more', '45 and older', 'In Poverty', 'Non-white', ]]
 
 cd.to_csv('./data_2023/cd_2023.csv', index=False)
