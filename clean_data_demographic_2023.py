@@ -76,10 +76,20 @@ cd = cd.merge(
 )
 cd['CD119'] = 'Ohio ' + cd['CD119FP'].astype(str).str.zfill(2)
 
+# Merge urbanization df
+urbanization_df = pd.read_csv('./data_2023/urbanization_2024.csv')
+cd = cd.merge(
+    urbanization_df[['CD119FP', 'urbanization_pct']],
+    on='CD119FP',
+    how='left'
+)
+
+
 # Final columns included are same as 2018 dataset
 cd = cd[['CD119', '18-44', '45-64', '65 and older',
        'Women', 'In Poverty', 'Did not finish high school',
-       'Bachelors or more', 'White', 'Black', 'Asian', 'Hispanic']]
+       'Bachelors or more', 'White', 'Black', 'Asian', 'Hispanic',
+       'urbanization_pct']]
 cd = cd.round(1)
 
 # Further choose columns

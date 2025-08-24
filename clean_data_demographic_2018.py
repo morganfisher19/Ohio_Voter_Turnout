@@ -86,11 +86,19 @@ df = voter_turnout.merge(age_cd_gdf, on=merge_cols, how='inner') \
 df['18-44'] = df['18-29'] + df['30-44']
 df['CD116'] = df['State name'] + ' ' + df['CD116FP'].astype(str).str.zfill(2)
 
+# Merge urbanization df
+urbanization_df = pd.read_csv('./data_2018/urbanization_2018.csv')
+df = df.merge(
+    urbanization_df[['CD116', 'urbanization_pct']],
+    on='CD116',
+    how='left'
+)
+
 # Choose Select columns
 df = df[['CD116', 'Voting rate', '18-44', '45-64',
        '65 and older', 'Women', 'In Poverty', 'Did not finish high school',
-       'Bachelors or more', 'White', 'Black', 'Asian', 'Hispanic']]
-       # 'urbanization_pct' (not included for now)
+       'Bachelors or more', 'White', 'Black', 'Asian', 'Hispanic',
+       'urbanization_pct']]
 
 df.loc[:, df.columns != 'Voter Data'] = df.loc[:, df.columns != 'Voter Data'].round(1)
 
