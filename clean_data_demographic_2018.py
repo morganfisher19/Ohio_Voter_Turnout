@@ -50,14 +50,20 @@ sex_poverty_cd_gdf = clean_cd_data(sex_poverty_cd_file, sex_poverty_cd_dict, sex
 education_cd_file = "./data_2018/demographic_data/table02c_education_2018.csv"
 education_cd_dict = {'Unnamed: 8': 'Less than 9th grade',
     'Unnamed: 12': '9th to 12 Grade, no diploma',
+    'Unnamed: 16': 'High school graduate',
     'Unnamed: 36': 'High school or more',
     'Unnamed: 40': 'Bachelors or more'}
-education_cd_columns = ['State name', 'Congressional district', 'Less than 9th grade', '9th to 12 Grade, no diploma', 'High school or more', 'Bachelors or more']
+education_cd_columns = ['State name', 'Congressional district', 'Less than 9th grade', '9th to 12 Grade, no diploma', 'High school graduate', 'High school or more', 'Bachelors or more']
 education_cd_gdf = clean_cd_data(education_cd_file, education_cd_dict, education_cd_columns)
 # Making new column combining those that did not finish high school
 education_cd_gdf['Did not finish high school'] = (
     education_cd_gdf['Less than 9th grade'] + education_cd_gdf['9th to 12 Grade, no diploma']
 )
+
+education_cd_gdf['High school or less'] = (
+    education_cd_gdf['Less than 9th grade'] + education_cd_gdf['9th to 12 Grade, no diploma'] + education_cd_gdf['High school graduate']
+)
+
 education_cd_gdf = education_cd_gdf.drop(
     ['Less than 9th grade', '9th to 12 Grade, no diploma'],
     axis=1
@@ -104,9 +110,10 @@ df = df.merge(econ_df, on='CD116', how='inner').copy()
 
 # Choose Select columns
 df = df[['CD116', 'Voting rate', '18-44', '45-64',
-       '65 and older', 'In Poverty', 'Did not finish high school',
+       '65 and older', 'In Poverty', 
        # 'Women',
-       'Bachelors or more', 'White', 'Black', 'Asian', 'Hispanic',
+       'Did not finish high school', 'High school or less', 'Bachelors or more',
+       'White', 'Black', 'Asian', 'Hispanic',
        'Under $1', '$1 under $10,000', '$10,000 under $25,000',
        '$25,000 under $50,000', '$50,000 under $75,000', '$500,000 or more',
        '$75,000 under $100,000',
