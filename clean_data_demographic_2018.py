@@ -77,6 +77,8 @@ cols_to_convert = ['White', 'Black', 'Asian', 'Hispanic']
 for col in cols_to_convert:
     race_cd_gdf[col] = pd.to_numeric(race_cd_gdf[col], errors='coerce')
 
+# Economic data
+
 # Merge data to get a dataset called 'df' with all varaibles:
 merge_cols = ['State name', 'Congressional district', 'CD116FP']
 df = voter_turnout.merge(age_cd_gdf, on=merge_cols, how='inner') \
@@ -86,6 +88,7 @@ df = voter_turnout.merge(age_cd_gdf, on=merge_cols, how='inner') \
 df['18-44'] = df['18-29'] + df['30-44']
 df['CD116'] = df['State name'] + ' ' + df['CD116FP'].astype(str).str.zfill(2)
 
+
 # Merge urbanization df
 urbanization_df = pd.read_csv('./data_2018/urbanization_2018.csv')
 df = df.merge(
@@ -94,13 +97,23 @@ df = df.merge(
     how='left'
 )
 
+# Merge econ
+econ_df =  pd.read_csv('./data_2018/demographic_data/18incd_clean.csv')
+econ_cd_columns = ["Under $1", "$1 under $10,000",	"$10,000 under $25,000", "$25,000 under $50,000", "$50,000 under $75,000", "$75,000 under $100,000", "$100,000 under $200,000",	"$200,000 under $500,000", "$500,000 or more" ]
+df = df.merge(econ_df, on='CD116', how='inner').copy()
+
 # Choose Select columns
 df = df[['CD116', 'Voting rate', '18-44', '45-64',
-       '65 and older', 'Women', 'In Poverty', 'Did not finish high school',
+       '65 and older', 'In Poverty', 'Did not finish high school',
+       # 'Women',
        'Bachelors or more', 'White', 'Black', 'Asian', 'Hispanic',
+       'Under $1', '$1 under $10,000', '$10,000 under $25,000',
+       '$25,000 under $50,000', '$50,000 under $75,000', '$500,000 or more',
+       '$75,000 under $100,000',
+       '$100,000 under $200,000', '$200,000 under $500,000',
        'urbanization_pct']]
 
-df.loc[:, df.columns != 'Voter Data'] = df.loc[:, df.columns != 'Voter Data'].round(1)
+# df.loc[:, df.columns != 'Voter Data'] = df.loc[:, df.columns != 'Voter Data'].round(1)
 
 # # Further refine columns
 # df['Non-white'] = 100 - df['White']

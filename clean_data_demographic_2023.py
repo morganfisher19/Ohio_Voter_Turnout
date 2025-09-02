@@ -84,11 +84,19 @@ cd = cd.merge(
     how='left'
 )
 
+# Merge econ
+econ_df =  pd.read_csv('./data_2023/22incdoh_clean.csv')
+cd = cd.merge(econ_df, on='CD119', how='inner').copy()
 
 # Final columns included are same as 2018 dataset
-cd = cd[['CD119', '18-44', '45-64', '65 and older',
-       'Women', 'In Poverty', 'Did not finish high school',
+cd = cd[['CD119', '18-44', '45-64',
+       '65 and older', 'In Poverty', 'Did not finish high school',
+       # 'Women',
        'Bachelors or more', 'White', 'Black', 'Asian', 'Hispanic',
+       'Under $1', '$1 under $10,000', '$10,000 under $25,000',
+       '$25,000 under $50,000', '$50,000 under $75,000', '$500,000 or more',
+       '$75,000 under $100,000',
+       '$100,000 under $200,000', '$200,000 under $500,000',
        'urbanization_pct']]
 cd = cd.round(1)
 
